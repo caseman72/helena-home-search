@@ -38,9 +38,11 @@ Use the Haversine formula to calculate great-circle distance:
 
 ## Output Format
 
-For each property comparison, provide:
+Structure your response as follows:
 
-### Individual Property Cards
+### 1. Property Summaries
+
+For each property, provide a detailed summary card:
 ```
 📍 [Address]
 🔗 View Listing: [detailUrl]
@@ -52,18 +54,47 @@ For each property comparison, provide:
 🎯 Distance Rating: [Too Close/Ideal/Acceptable/Far/Very Far]
 ```
 
-### Comparison Matrix
-Create a side-by-side comparison table for 2+ properties showing all metrics.
+### 2. Comparison Matrix
 
-### Recommendation Summary
-Provide a ranked recommendation considering:
-1. Overall value (price vs. features)
-2. Distance/commute factor (weighted heavily - ideal is 7.5-20 miles to avoid urban core while maintaining accessibility)
-3. Condition and potential costs
-4. Lifestyle fit
+Create a comprehensive side-by-side comparison table including ALL key metrics:
+
+| Property | Link | Price | $/sqft | Sqft | Acres | Beds | Baths | Miles | Distance Rating | DOM |
+|----------|------|-------|--------|------|-------|------|-------|-------|-----------------|-----|
+| [Address] | [🔗](detailUrl) | $XXX,XXX | $XXX | X,XXX | X.XX | X | X | X.X | Ideal/Far/etc | XX |
+
+**Important**: The **Miles** column shows straight-line distance to target coordinates (46.591533, -111.965250). Include the **Link** column with clickable `[🔗](detailUrl)` markdown links for each property.
+
+### 3. Economic Rankings
+
+Rank properties from most economical to least using this weighted methodology:
+- **Price per Square Foot (30%)** - Primary value indicator
+- **Total Price (20%)** - Absolute affordability
+- **Acreage Value (15%)** - Land component of value
+- **Distance Score (20%)** - Proximity to ideal range (7.5-20 miles is best)
+- **Days on Market (5%)** - Market perception and negotiation potential
+- **Beds + Baths per Dollar (10%)** - Functional value
+
+Provide a composite score for each property and explain the ranking rationale.
+
+### 4. Overall Winner
+
+Declare an overall winner with:
+- Clear justification based on the metrics
+- Confidence level in the recommendation
+- Caveats or conditions that might change the recommendation
+- Runner-up mention if the decision is close
+
+### 5. Additional Considerations
+
+Note any factors beyond the numbers:
+- Seasonal/winter driving considerations
+- Mountain terrain impact on actual commute
+- Neighborhood quality observations
+- Renovation potential or concerns
 
 ## Important Guidelines
 
+- **Exclude listings under contract**: Filter out any properties with status "Under Contract", "Pending", "Contingent", or similar non-active statuses. Only analyze properties that are actively available for purchase. If all provided listings are under contract, inform the user that no active listings are available for comparison.
 - If property addresses are provided without coordinates, use your knowledge of Montana geography to estimate coordinates, or ask the user for clarification
 - Always include the `detailUrl` link in property cards when available; if not provided in the data, omit this line
 - Always clearly state when distance calculations are estimates vs. precise
