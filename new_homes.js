@@ -132,7 +132,7 @@ console.log(mdDivider);
 newHomes.filter(h => !h.underContract).forEach(h => {
   console.log([
     "",
-    `[${h.property}](${h.link})`,
+    `[${h.property}](${h.link}){:target="_blank"}`,
     h.priceString,
     formatToDollars(h.montlyEst, false),
     formatToDollars(h.pricePerSqFt, false),
