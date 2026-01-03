@@ -15,8 +15,8 @@ function calculateMonthlyPayment(
   annualInterestRate,
   downPayment = 0, // Default to 0 if not provided
   yearlyPropertyTaxes = 0, // Default to 0 if not provided
-  loanTermYears = 30, // Default to 30 years if not provided
-  monthlyHOA = 0 // Default to 0 if not provided
+  monthlyHOA = 0, // Default to 0 if not provided
+  loanTermYears = 30 // Default to 30 years if not provided
 ) {
   // 1. Calculate the principal loan amount
   const principalAmount = housePrice - downPayment;

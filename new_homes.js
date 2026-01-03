@@ -8,13 +8,13 @@ const DOWN_PAYMENT = 200000;
 
 const distanceRating = (miles) => {
   if (miles < 7.5) {
-    return "Too Close";
+    return "Close";
   }
   if (miles < 20) {
     return "Ideal";
   }
   if (miles < 25) {
-    return "Acceptable";
+    return "OK";
   }
   if (miles < 35) {
     return "Far";
@@ -34,7 +34,8 @@ const newHomes = listResults.map( home => {
   const homeInfo = home.hdpData.homeInfo;
   const zestimate = homeInfo.zestimate || price;
   const propertyTaxesEst = Math.round(price * 0.80 / 100.0);
-  const montlyEst = calculateMonthlyPayment(price, INTEREST_RATE, DOWN_PAYMENT, propertyTaxesEst);
+  const montlyInsurance = price * 0.4 / 100.0 / 12.0;
+  const montlyEst = calculateMonthlyPayment(price, INTEREST_RATE, price * 20.0 / 100.00, propertyTaxesEst, montlyInsurance);
   const rentZestimate =  homeInfo.rentZestimate || montlyEst;
 
   return {
@@ -71,6 +72,7 @@ console.log(`
 | Property | Price | Monthly | $/sqft | Sqft | Lot | Beds | Baths | Miles | Drive | DOM | ZestDelta | RentDelta |
 |----------|-------|---------|--------|------|-----|------|-------|-------|-------|-----|-----------|-----------|`
 );
+
 newHomes.forEach(h => {
   console.log([
     "",
@@ -90,4 +92,3 @@ newHomes.forEach(h => {
     ""
   ].join(" | ").trim());
 });
-
