@@ -18,7 +18,7 @@ const distanceRating = (miles) => {
   if (miles < 5) {
     return "Close";
   }
-  if (miles < 20) {
+  if (miles < 15) {
     return "Ideal";
   }
   if (miles < 25) {
@@ -34,10 +34,13 @@ const calcPricePerSqFt = (area, price) => {
   return area ? Math.round(price / area) : 0;
 };
 
-const newHomes = cat1.searchResults.mapResults.map(home => {
+const mapResults = cat1.searchResults.mapResults;
+const listResults = cat1.searchResults.listResults;
+
+const newHomes = (listResults.length > mapResults.length ? listResults : mapResults).map(home => {
+  const homeInfo = home.hdpData?.homeInfo || {};
   const price = home.unformattedPrice || +home.price.replace(/[^0-9.]/g, "");
   const miles = calculateHaversineDistance(home.latLong.latitude, home.latLong.longitude, TARGET_LATITUDE, TARGET_LONGITUDE);
-  const homeInfo = home.hdpData.homeInfo;
   const zestimate = homeInfo.zestimate || price;
   const propertyTaxesEst = Math.round(price * PROPERTY_TAX_RATE / 100.0);
   const montlyInsurance = price / 12 * MONTHLY_INSURANCE_RATE / 100.0;
