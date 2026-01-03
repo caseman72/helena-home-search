@@ -2,6 +2,7 @@ import { cat1 } from "./new_homes.json";
 import { calculateHaversineDistance } from "./libs/haversine";
 import { calculateMonthlyPayment } from "./libs/mortgageCalculator";
 import { formatToDollars } from "./libs/currencyFormatter";
+import { distanceRatingHelena as distanceRating, costOfLotHelena as costOfLot } from "./libs/regionSpecifics";
 
 const DOWN_PAYMENT = 20; // if under a hundred then a percent otherwise a cash value
 
@@ -14,43 +15,8 @@ const MONTHLY_INSURANCE_RATE = 0.40;
 const TARGET_LATITUDE = +cat1.searchList.adsConfig.targets.mlat || 46.591533;
 const TARGET_LONGITUDE = +cat1.searchList.adsConfig.targets.mlong || -111.965250;
 
-const distanceRating = (miles) => {
-  if (miles < 5) {
-    return "Close";
-  }
-  if (miles < 15) {
-    return "Ideal";
-  }
-  if (miles < 25) {
-    return "OK";
-  }
-  if (miles < 35) {
-    return "Far";
-  }
-  return "Extreme";
-};
-
-const costOfLotHelena = (acres) => {
-  let cost = 7500;  // default for 60+ acres
-
-  if (acres < 5) {
-    cost = 40000;
-  }
-  else if (acres < 20) {
-    cost = 25000;
-  }
-  else if (acres < 40) {
-    cost = 15000;
-  }
-  else if (acres < 60) {
-    cost = 10000;
-  }
-
-  return Math.max(0, acres - 0.5) * cost;
-};
-
 const calcPricePerSqFt = (area, price, acres) => {
-  return area ? Math.round((price - costOfLotHelena(acres)) / area) : 0;
+  return area ? Math.round((price - costOfLot(acres)) / area) : 0;
 };
 
 const mapResults = cat1.searchResults.mapResults;
