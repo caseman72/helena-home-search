@@ -33,39 +33,7 @@ function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
   return Math.round(100 * distance) / 100.0;
 }
 
-// Fixed target coordinates
-const TARGET_LATITUDE = 46.591533;
-const TARGET_LONGITUDE = -111.965250; // West longitudes are negative
-
-/**
- * Calculates the straight-line distance in miles from a fixed target coordinate
- * to a given point using the Haversine formula.
- *
- * Fixed target: 46.591533°N, 111.965250°W
- *
- * @param {number} currentLat Latitude of the current point in degrees.
- * @param {number} currentLon Longitude of the current point in degrees.
- * @returns {number} The distance in miles from the target to the current point.
- */
-function distanceFromTarget(currentLat, currentLon) {
-  return calculateHaversineDistance(
-    TARGET_LATITUDE,
-    TARGET_LONGITUDE,
-    currentLat,
-    currentLon
-  );
-}
-
-// Example usage (optional, for testing)
-// const exampleLat = 40.7128; // New York City latitude
-// const exampleLon = -74.0060; // New York City longitude
-// const distance = distanceFromTarget(exampleLat, exampleLon);
-// console.log(`Distance from target to New York City: ${distance.toFixed(2)} miles`);
-
 // Export the function for use in other modules
 module.exports = {
-  calculateHaversineDistance,
-  distanceFromTarget,
-  TARGET_LATITUDE,
-  TARGET_LONGITUDE
+  calculateHaversineDistance
 };
