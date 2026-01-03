@@ -74,8 +74,7 @@ const newHomes = cat1.searchResults.mapResults.map(home => {
 });
 
 const headers = [
-  {
-    h: "Property",
+  { h: "Property",
     d: "----------"
   },
   {
@@ -130,7 +129,7 @@ const mdDivider = [""].concat(headers.map(h => h.d), "").join("|").trim();
 console.log(mdHeader);
 console.log(mdDivider);
 
-newHomes.forEach(h => {
+newHomes.filter(h => !h.underContract).forEach(h => {
   console.log([
     "",
     `[${h.property}](${h.link})`,
