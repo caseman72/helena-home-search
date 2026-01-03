@@ -7,7 +7,7 @@ import { distanceRatingHelena as distanceRating, costOfLotHelena as costOfLot } 
 const DOWN_PAYMENT = 20; // if under a hundred then a percent otherwise a cash value
 
 const INTEREST_RATE = 5.88;
-const PROPERTY_TAX_RATE = 0.80;
+const PROPERTY_TAX_RATE = 0.68; // of taxAssessedValue
 const MONTHLY_INSURANCE_RATE = 0.40;
 
 
@@ -15,19 +15,25 @@ const MONTHLY_INSURANCE_RATE = 0.40;
 const TARGET_LATITUDE = +cat1.searchList.adsConfig.targets.mlat || 46.591533;
 const TARGET_LONGITUDE = +cat1.searchList.adsConfig.targets.mlong || -111.965250;
 
+// Quick function for $/sqft
 const calcPricePerSqFt = (area, price, acres) => {
   return area ? Math.round((price - costOfLot(acres)) / area) : 0;
 };
 
+// Merge ?
 const mapResults = cat1.searchResults.mapResults;
 const listResults = cat1.searchResults.listResults;
+
 
 const newHomes = (listResults.length > mapResults.length ? listResults : mapResults).map(home => {
   const homeInfo = home.hdpData?.homeInfo || {};
   const price = home.unformattedPrice || +home.price.replace(/[^0-9.]/g, "");
   const miles = calculateHaversineDistance(home.latLong.latitude, home.latLong.longitude, TARGET_LATITUDE, TARGET_LONGITUDE);
   const zestimate = homeInfo.zestimate || price;
-  const propertyTaxesEst = Math.round(price * PROPERTY_TAX_RATE / 100.0);
+
+  const taxAssessedValue = Math.min(price, homeInfo.taxAssessedValue || price);
+  const propertyTaxesEst = Math.round(taxAssessedValue * PROPERTY_TAX_RATE / 100.0);
+
   const montlyInsurance = price / 12 * MONTHLY_INSURANCE_RATE / 100.0;
   const downPayment = DOWN_PAYMENT < 100 ? price * DOWN_PAYMENT / 100.0 : DOWN_PAYMENT;
   const montlyEst = calculateMonthlyPayment(price, INTEREST_RATE, downPayment, propertyTaxesEst, montlyInsurance);
@@ -37,6 +43,7 @@ const newHomes = (listResults.length > mapResults.length ? listResults : mapResu
   return {
     property : home.address,
     link: /^http/.test(home.detailUrl) ? home.detailUrl : `https://www.zillow.com${home.detailUrl}`,
+    image: home.imgSrc,
     price,
     priceString: home.price,
     pricePerSqFt: calcPricePerSqFt(home.area, price, acres),
@@ -54,8 +61,8 @@ const newHomes = (listResults.length > mapResults.length ? listResults : mapResu
     zestimateDelta: zestimate - price,
     rentZestimate,
     rentDelta: rentZestimate - montlyEst,
-    taxAssessedValue: homeInfo.taxAssessedValue,
-    taxDelta: homeInfo.taxAssessedValue - price,
+    taxAssessedValue,
+    taxDelta: taxAssessedValue - price,
     priceChange: homeInfo.priceChange || 0,
     datePriceChanged: homeInfo.datePriceChanged || 0,
     propertyTaxesEst,
@@ -66,6 +73,9 @@ const newHomes = (listResults.length > mapResults.length ? listResults : mapResu
 const headers = [
   { h: "Property",
     d: "----------"
+  },
+  { h: "Image",
+    d: ":-----:"
   },
   {
     h: "Price",
@@ -127,6 +137,7 @@ newHomes.filter(h => !h.underContract).forEach(h => {
   console.log([
     "",
     `[${h.property}](${h.link})`,
+    `[![${h.property}](${h.image})](${h.image})`,
     h.priceString,
     formatToDollars(h.montlyEst, false),
     formatToDollars(h.pricePerSqFt, false),
