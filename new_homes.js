@@ -1,7 +1,7 @@
 import { cat1 } from "./new_homes.json";
-import { calculateHaversineDistance } from "./haversine";
-import { calculateMonthlyPayment } from "./mortgageCalculator";
-import { formatToDollars } from "./currencyFormatter";
+import { calculateHaversineDistance } from "./libs/haversine";
+import { calculateMonthlyPayment } from "./libs/mortgageCalculator";
+import { formatToDollars } from "./libs/currencyFormatter";
 
 const DOWN_PAYMENT = 20; // if under a hundred then a percent otherwise a cash value
 
