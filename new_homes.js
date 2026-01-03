@@ -63,7 +63,7 @@ const newHomes = cat1.searchResults.mapResults.map(home => {
     taxAssessedValue: homeInfo.taxAssessedValue,
     rentZestimate: homeInfo.rentZestimate,
     zestimate,
-    zestimateDelta: price - zestimate,
+    zestimateDelta: zestimate - price,
     rentZestimate,
     rentDelta: rentZestimate - montlyEst,
     priceChange: homeInfo.priceChange || 0,
