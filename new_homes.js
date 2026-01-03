@@ -4,10 +4,10 @@ import { calculateMonthlyPayment } from "./mortgageCalculator";
 import { formatToDollars } from "./currencyFormatter";
 
 const INTEREST_RATE = 5.88;
-const DOWN_PAYMENT = 200000;
+const DOWN_PAYMENT = 20;
 
 const distanceRating = (miles) => {
-  if (miles < 7.5) {
+  if (miles < 5) {
     return "Close";
   }
   if (miles < 20) {
@@ -19,7 +19,7 @@ const distanceRating = (miles) => {
   if (miles < 35) {
     return "Far";
   }
-  return "Too Far";
+  return "Extreme";
 };
 
 const calcPricePerSqFt = (area, price) => {
@@ -35,7 +35,8 @@ const newHomes = listResults.map( home => {
   const zestimate = homeInfo.zestimate || price;
   const propertyTaxesEst = Math.round(price * 0.80 / 100.0);
   const montlyInsurance = price * 0.4 / 100.0 / 12.0;
-  const montlyEst = calculateMonthlyPayment(price, INTEREST_RATE, price * 20.0 / 100.00, propertyTaxesEst, montlyInsurance);
+  const downPayment = DOWN_PAYMENT < 1E3 ? price * DOWN_PAYMENT / 100.0 : DOWN_PAYMENT;
+  const montlyEst = calculateMonthlyPayment(price, INTEREST_RATE, downPayment, propertyTaxesEst, montlyInsurance);
   const rentZestimate =  homeInfo.rentZestimate || montlyEst;
 
   return {
@@ -66,12 +67,26 @@ const newHomes = listResults.map( home => {
   }
 });
 
+const headers = [
+  "Property",
+  "Price",
+  "Monthly",
+  "$/sqft",
+  "Sqft",
+  "Lot",
+  "Beds",
+  "Baths",
+  "Miles",
+  "Drive",
+  "DOM",
+  "ZestDelta",
+  "RentDelta"
+];
 
+const mdHeader = [""].concat(headers, "").join(" | ").trim();
 
-console.log(`
-| Property | Price | Monthly | $/sqft | Sqft | Lot | Beds | Baths | Miles | Drive | DOM | ZestDelta | RentDelta |
-|----------|-------|---------|--------|------|-----|------|-------|-------|-------|-----|-----------|-----------|`
-);
+console.log(mdHeader);
+console.log(mdHeader.replace(/[^|]/g, "-"));
 
 newHomes.forEach(h => {
   console.log([
