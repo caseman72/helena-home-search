@@ -30,8 +30,27 @@ const distanceRating = (miles) => {
   return "Extreme";
 };
 
-const calcPricePerSqFt = (area, price) => {
-  return area ? Math.round(price / area) : 0;
+const costOfLotHelena = (acres) => {
+  let cost = 7500;  // default for 60+ acres
+
+  if (acres < 5) {
+    cost = 40000;
+  }
+  else if (acres < 20) {
+    cost = 25000;
+  }
+  else if (acres < 40) {
+    cost = 15000;
+  }
+  else if (acres < 60) {
+    cost = 10000;
+  }
+
+  return Math.max(0, acres - 0.5) * cost;
+};
+
+const calcPricePerSqFt = (area, price, acres) => {
+  return area ? Math.round((price - costOfLotHelena(acres)) / area) : 0;
 };
 
 const mapResults = cat1.searchResults.mapResults;
@@ -47,13 +66,14 @@ const newHomes = (listResults.length > mapResults.length ? listResults : mapResu
   const downPayment = DOWN_PAYMENT < 100 ? price * DOWN_PAYMENT / 100.0 : DOWN_PAYMENT;
   const montlyEst = calculateMonthlyPayment(price, INTEREST_RATE, downPayment, propertyTaxesEst, montlyInsurance);
   const rentZestimate =  homeInfo.rentZestimate || montlyEst;
+  const acres = homeInfo.lotAreaUnit === "acres" ? homeInfo.lotAreaValue.toFixed(1) : 0;
 
   return {
     property : home.address,
     link: /^http/.test(home.detailUrl) ? home.detailUrl : `https://www.zillow.com${home.detailUrl}`,
     price,
     priceString: home.price,
-    pricePerSqFt: calcPricePerSqFt(home.area, price),
+    pricePerSqFt: calcPricePerSqFt(home.area, price, acres),
     sqft: home.area,
     beds: home.beds,
     baths: home.baths,
@@ -62,7 +82,7 @@ const newHomes = (listResults.length > mapResults.length ? listResults : mapResu
     distanceRating: distanceRating(miles),
     dom: homeInfo.daysOnZillow > 1 ? homeInfo.daysOnZillow :  Math.round(home.timeOnZillow / 864E5),
     underContract: /contract/i.test(home.statusText),
-    acres: homeInfo.lotAreaUnit === "acres" ? homeInfo.lotAreaValue.toFixed(1) : 0,
+    acres,
     taxAssessedValue: homeInfo.taxAssessedValue,
     rentZestimate: homeInfo.rentZestimate,
     zestimate,
