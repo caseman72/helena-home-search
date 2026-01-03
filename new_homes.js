@@ -2,7 +2,11 @@ import { cat1 } from "./new_homes.json";
 import { calculateHaversineDistance } from "./libs/haversine";
 import { calculateMonthlyPayment } from "./libs/mortgageCalculator";
 import { formatToDollars } from "./libs/currencyFormatter";
-import { distanceRatingHelena as distanceRating, costOfLotHelena as costOfLot } from "./libs/regionSpecifics";
+import {
+  distanceRatingHelena as distanceRating,
+  costOfLotHelena as costOfLot,
+  calculatePropertyTaxesHelena as calculatePropertyTaxes
+} from "./libs/regionSpecifics";
 
 const DOWN_PAYMENT = 20; // if under a hundred then a percent otherwise a cash value
 
@@ -32,7 +36,7 @@ const newHomes = (listResults.length > mapResults.length ? listResults : mapResu
   const zestimate = homeInfo.zestimate || price;
 
   const taxAssessedValue = homeInfo.taxAssessedValue || price;
-  const propertyTaxesEst = Math.round(taxAssessedValue * PROPERTY_TAX_RATE / 100.0);
+  const propertyTaxesEst = calculatePropertyTaxes(taxAssessedValue);
 
   const montlyInsurance = price / 12 * MONTHLY_INSURANCE_RATE / 100.0;
   const downPayment = DOWN_PAYMENT < 100 ? price * DOWN_PAYMENT / 100.0 : DOWN_PAYMENT;
