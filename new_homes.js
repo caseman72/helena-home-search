@@ -49,12 +49,13 @@ const newHomes = (listResults.length > mapResults.length ? listResults : mapResu
     dom: homeInfo.daysOnZillow > 1 ? homeInfo.daysOnZillow :  Math.round(home.timeOnZillow / 864E5),
     underContract: /contract/i.test(home.statusText),
     acres,
-    taxAssessedValue: homeInfo.taxAssessedValue,
     rentZestimate: homeInfo.rentZestimate,
     zestimate,
     zestimateDelta: zestimate - price,
     rentZestimate,
     rentDelta: rentZestimate - montlyEst,
+    taxAssessedValue: homeInfo.taxAssessedValue,
+    taxDelta: homeInfo.taxAssessedValue - price,
     priceChange: homeInfo.priceChange || 0,
     datePriceChanged: homeInfo.datePriceChanged || 0,
     propertyTaxesEst,
@@ -109,6 +110,10 @@ const headers = [
   {
     h: "RentDelta",
     d: "----------:"
+  },
+  {
+    h: "TaxDelta",
+    d: "---------:"
   }
 ];
 
@@ -133,6 +138,7 @@ newHomes.filter(h => !h.underContract).forEach(h => {
     h.dom,
     formatToDollars(h.zestimateDelta, false),
     formatToDollars(h.rentDelta, false),
+    formatToDollars(h.taxDelta, false),
     ""
   ].join(" | ").trim());
 });
