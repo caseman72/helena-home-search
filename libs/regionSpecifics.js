@@ -45,10 +45,7 @@ const calculatePropertyTaxesBend = (taxAssessedValue) => {
 };
 
 const distanceRatingBend = (miles) => {
-  if (miles < 5) {
-    return "Close";
-  }
-  if (miles < 10) {
+  if (miles < 7.5) {
     return "Ideal";
   }
   if (miles < 15) {
