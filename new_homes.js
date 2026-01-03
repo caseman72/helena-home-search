@@ -31,7 +31,7 @@ const newHomes = (listResults.length > mapResults.length ? listResults : mapResu
   const miles = calculateHaversineDistance(home.latLong.latitude, home.latLong.longitude, TARGET_LATITUDE, TARGET_LONGITUDE);
   const zestimate = homeInfo.zestimate || price;
 
-  const taxAssessedValue = Math.min(price, homeInfo.taxAssessedValue || price);
+  const taxAssessedValue = homeInfo.taxAssessedValue || price;
   const propertyTaxesEst = Math.round(taxAssessedValue * PROPERTY_TAX_RATE / 100.0);
 
   const montlyInsurance = price / 12 * MONTHLY_INSURANCE_RATE / 100.0;
