@@ -49,11 +49,11 @@ const newHomes = listResults.map( home => {
     beds: home.beds,
     baths: home.baths,
     miles,
-    travelTime: miles + 5,
+    travelTime: miles + 5.0,
     distanceRating: distanceRating(miles),
     dom: homeInfo.daysOnZillow > 1 ? homeInfo.daysOnZillow :  Math.round(home.timeOnZillow / 864E5),
     underContract: /contract/i.test(home.statusText),
-    acres: homeInfo.lotAreaUnit === "acres" ? homeInfo.lotAreaValue : 0,
+    acres: homeInfo.lotAreaUnit === "acres" ? homeInfo.lotAreaValue.toFixed(1) : 0,
     taxAssessedValue: homeInfo.taxAssessedValue,
     rentZestimate: homeInfo.rentZestimate,
     zestimate,
@@ -86,7 +86,8 @@ const headers = [
 const mdHeader = [""].concat(headers, "").join(" | ").trim();
 
 console.log(mdHeader);
-console.log(mdHeader.replace(/[^|]/g, "-"));
+console.log(`|----------|------:|--------:|-------:|-----:|----:|------|-------|------:|:-----:|----:|----------:|----------:|`);
+// console.log(mdHeader.replace(/[^|]/g, "-"));
 
 newHomes.forEach(h => {
   console.log([
