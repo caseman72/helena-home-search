@@ -74,8 +74,7 @@ const headers = [
   "$/sqft",
   "Sqft",
   "Lot",
-  "Beds",
-  "Baths",
+  "B/B",
   "Miles",
   "Drive",
   "DOM",
@@ -86,7 +85,7 @@ const headers = [
 const mdHeader = [""].concat(headers, "").join(" | ").trim();
 
 console.log(mdHeader);
-console.log(`|----------|------:|--------:|-------:|-----:|----:|:----:|:-----:|------:|:-----:|----:|----------:|----------:|`);
+console.log(`|----------|------:|--------:|-------:|-----:|----:|:---:|------:|:-----:|----:|----------:|----------:|`);
 // console.log(mdHeader.replace(/[^|]/g, "-"));
 
 newHomes.forEach(h => {
@@ -98,9 +97,8 @@ newHomes.forEach(h => {
     formatToDollars(h.pricePerSqFt, false),
     h.sqft,
     h.acres,
-    h.beds,
-    h.baths,
-    h.miles.toFixed(0),
+    `${h.beds}/${h.baths}`,
+    h.miles.toFixed(1),
     h.distanceRating,
     h.dom,
     formatToDollars(h.zestimateDelta, false),
