@@ -58,7 +58,7 @@ const newHomes = listResults.map( home => {
     zestimate,
     zestimateDelta: price - zestimate,
     rentZestimate,
-    rentDelta: montlyEst - rentZestimate,
+    rentDelta: rentZestimate - montlyEst,
     priceChange: homeInfo.priceChange || 0,
     datePriceChanged: homeInfo.datePriceChanged || 0,
     propertyTaxesEst,
