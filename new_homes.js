@@ -86,7 +86,7 @@ const headers = [
 const mdHeader = [""].concat(headers, "").join(" | ").trim();
 
 console.log(mdHeader);
-console.log(`|----------|------:|--------:|-------:|-----:|----:|------|-------|------:|:-----:|----:|----------:|----------:|`);
+console.log(`|----------|------:|--------:|-------:|-----:|----:|:----:|:-----:|------:|:-----:|----:|----------:|----------:|`);
 // console.log(mdHeader.replace(/[^|]/g, "-"));
 
 newHomes.forEach(h => {
@@ -100,7 +100,7 @@ newHomes.forEach(h => {
     h.acres,
     h.beds,
     h.baths,
-    h.miles,
+    h.miles.toFixed(0),
     h.distanceRating,
     h.dom,
     formatToDollars(h.zestimateDelta, false),
