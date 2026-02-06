@@ -1,4 +1,4 @@
-import { cat1 } from "./new_homes.json";
+import { cat1 } from "./async-create-search-page-state.json";
 import { calculateHaversineDistance } from "./libs/haversine";
 import { calculateMonthlyPayment } from "./libs/mortgageCalculator";
 import { formatToDollars } from "./libs/currencyFormatter";
